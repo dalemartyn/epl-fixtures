@@ -1,8 +1,20 @@
-const { getFixturesWithBroadcasters } = require('../../../fixtures');
+const {
+  getFixturesWithBroadcasters,
+  getFixturesWithBroadcastersByGameweek
+} = require('../../../fixtures');
 
 exports.handler = function(event, context, callback) {
-
-  getFixturesWithBroadcasters()
+  let getFixtures;
+  if (event.body) {
+    console.log(event.body);
+    const body = JSON.parse(event.body);
+    const gameweek = body.gameweek;
+    getFixtures = getFixturesWithBroadcastersByGameweek.bind(null, gameweek);
+  } else {
+    getFixtures = getFixturesWithBroadcasters;
+  }
+  
+  getFixtures()
     .then(sendResponse)
     .catch(onError);
 
