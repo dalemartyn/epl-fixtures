@@ -4,23 +4,10 @@ const { keyBy } = require('lodash');
 module.exports = async function getFixtures(gameweek = 1) {
   const [fixtures, teams] = await Promise.all([getFixturesJson(gameweek), getTeams()]);
 
-  return fixtures.map(({
-    team_h,
-    team_a,
-    kickoff_time,
-    started,
-    finished,
-    minutes,
-    code
-  }) => ({
-    team_h: getTeam(team_h, teams),
-    team_a: getTeam(team_a, teams),
-    kickoff_time,
-    started,
-    finished,
-    minutes,
-    code
-  }));
+  return {
+    gameweek,
+    fixtures: fixtures.map((f) => createFixture(f, teams))
+  };
 }
 
 function getFixturesJson(gameweek = 1) {
@@ -41,5 +28,34 @@ function getTeam(i, teams) {
 
   return {
     ...team
+  };
+}
+
+function createFixture(fixture, teams) {
+  const {
+    team_h,
+    team_a,
+    team_h_score,
+    team_a_score,
+    kickoff_time,
+    started,
+    finished,
+    minutes,
+    code
+  } = fixture;
+  return {
+    team_h: {
+      ...getTeam(team_h, teams),
+      score: team_h_score
+    },
+    team_a: {
+      ...getTeam(team_a, teams),
+      score: team_a_score
+    },
+    kickoff_time,
+    started,
+    finished,
+    minutes,
+    code
   };
 }

@@ -1,18 +1,12 @@
 const {
-  getFixturesWithBroadcasters,
-  getFixturesWithBroadcastersByGameweek
+  getAllFixtures
 } = require('../../../fixtures');
 
 exports.handler = async function(event) {
 
   try {
-    let data;
-    if (event.body) {
-      const { gameweek } = JSON.parse(event.body);
-      data = await getFixturesWithBroadcastersByGameweek(gameweek);
-    } else {
-      data = await getFixturesWithBroadcasters();
-    }
+    const data = await getAllFixtures();
+
     return {
       statusCode: 200,
       headers: {
