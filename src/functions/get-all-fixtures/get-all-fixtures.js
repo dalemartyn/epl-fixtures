@@ -11,6 +11,7 @@ exports.handler = async function(event) {
       statusCode: 200,
       headers: {
         'content-type': 'application/json',
+        'access-control-allow-origin': 'https://fixtures.dalestillman.com'
       },
       body: JSON.stringify(data, null, 2)
     };
