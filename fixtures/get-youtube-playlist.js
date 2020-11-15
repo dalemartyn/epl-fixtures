@@ -30,7 +30,7 @@ function getYoutubePlaylistPageJson(pageToken) {
   params.set('playlistId', YOUTUBE_PLAYLIST_ID);
   params.set('key', YOUTUBE_API_KEY);
   params.set('part', 'snippet');
-  params.set('maxResults', 5);
+  params.set('maxResults', 50);
 
   if (pageToken) {
     params.set('pageToken', pageToken);
