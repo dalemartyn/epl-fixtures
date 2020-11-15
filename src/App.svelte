@@ -1,6 +1,7 @@
 <script>
   import { onMount, tick } from 'svelte';
   import Layout from './Layout.svelte';
+  import Trophy from './Trophy.svelte';
   import Navigation from './Navigation.svelte';
   import Gameweek from './Gameweek.svelte';
 
@@ -10,7 +11,7 @@
     const res = await fetch(`/.netlify/functions/get-all-fixtures`);
     gameweeks = await res.json();
     await tick();
-    showCurrentGameweek();
+    showCurrentGameweek('auto');
   });
 
   function showGameweek(gameweek) {
@@ -20,15 +21,16 @@
     }
   }
 
-  function showCurrentGameweek() {
+  function showCurrentGameweek(behavior) {
     const element = document.querySelector('[data-current-gameweek]');
     if (element) {
-      element.scrollIntoView({ behavior: 'auto' });
+      element.scrollIntoView({ behavior });
     }
   }
 </script>
 
 <Layout><div slot="sidebar">
+    <Trophy {showCurrentGameweek} />
     <Navigation {gameweeks} {showGameweek} />
   </div><div slot="main">
     {#if gameweeks.length}

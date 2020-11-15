@@ -1,10 +1,6 @@
 <div class="layout">
   <div class="layout__sidebar">
     <div class="sidebar">
-      <h1>
-        <span class="visually-hidden">EPL Fixtures</span>
-        <img src="/img/trophy.svg" alt="" class="trophy" />
-      </h1>
       <slot name="sidebar" />
     </div>
   </div>
@@ -38,26 +34,5 @@
 .layout__main {
   padding-top: 60px;
   grid-column: 2 / -1;
-}
-
-h1 {
-  margin: 0;
-}
-
-.trophy {
-  display: block;
-  margin-bottom: 20px;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
 }
 </style>
