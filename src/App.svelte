@@ -28,18 +28,15 @@
   }
 </script>
 
-<Layout>
-  <div slot="sidebar">
+<Layout><div slot="sidebar">
     <Navigation {gameweeks} {showGameweek} />
-  </div>
-  <div slot="main">
+  </div><div slot="main">
     {#if gameweeks.length}
       {#each gameweeks as {gameweek, matchdays, current_gameweek}}
         <Gameweek {gameweek} {matchdays} {current_gameweek} />
       {/each}
     {/if}
-  </div>
-</Layout>
+  </div></Layout>
 
 <style>
 :global(body) {

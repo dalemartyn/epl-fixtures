@@ -1,8 +1,9 @@
 const fetch = require('node-fetch');
-const { keyBy, chain } = require('lodash');
+const { chain } = require('lodash');
+const teams = require('./teams');
 
 module.exports = async function getFixtures(gameweek = 1) {
-  const [apiFixtures, teams] = await Promise.all([getFixturesJson(gameweek), getTeams()]);
+  const apiFixtures = await getFixturesJson(gameweek);
 
   const fixtures = apiFixtures.map((f) => createFixture(f, teams));
   const matchdays = chain(fixtures)
@@ -11,6 +12,7 @@ module.exports = async function getFixtures(gameweek = 1) {
     .map(([date, fixtures]) => ({
       date,
       human_date: humanDate(date),
+      weekday: weekday(date),
       fixtures
     }))
     .sortBy('date')
@@ -31,24 +33,28 @@ function humanDate(isoDateTime) {
   });
 }
 
+function weekday(isoDateTime) {
+  return new Date(isoDateTime).toLocaleDateString('en-GB', {
+    weekday: 'short',
+  });
+}
+
 function getFixturesJson(gameweek = 1) {
   return fetch(`https://draft.premierleague.com/api/event/${gameweek}/fixtures`)
     .then((res) => res.json())
 }
 
-function getTeams() {
-  return fetch(`https://draft.premierleague.com/api/bootstrap-static`)
-    .then((res) => res.json())
-    .then((data) => {
-      return keyBy(data.teams, 'id');
-    });
-}
-
 function getTeam(i, teams) {
-  const team = teams[i];
+  const {
+    name,
+    short_name,
+    id
+  } = teams[i];
 
   return {
-    ...team
+    name,
+    short_name,
+    id
   };
 }
 

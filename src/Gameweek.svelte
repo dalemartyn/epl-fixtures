@@ -6,11 +6,8 @@
 
 <section data-gameweek={gameweek} data-current-gameweek={current_gameweek || null}>
   <h2>Gameweek {gameweek}</h2>
-  {#each matchdays as {human_date, fixtures}}
-    <table>
-      <tr>
-        <th colspan="5">{human_date}</th>
-      </tr>
+  <table>
+    {#each matchdays as {weekday, fixtures}}
       {#each fixtures as fixture}
         <tr>
           <td class="fixture__team">{fixture.team_h.name}</td>
@@ -22,12 +19,18 @@
             {/if}
           </td>
           <td class="fixture__team">{fixture.team_a.name}</td>
-          <td class="fixture__time">{fixture.time}</td>
-          <td class="fixture__broadcaster">{fixture.broadcaster||''}</td>
+          <td class="fixture__time">{weekday} {fixture.time}</td>
+          <td class="fixture__broadcaster">
+            {#if fixture.finished}
+              <a href="https://www.youtube.com/watch?v={fixture.youtube}" target="_blank">Highlights</a>
+            {:else}
+              {fixture.broadcaster||''}
+            {/if}
+          </td>
         </tr>
       {/each}
-    </table>
-  {/each}
+    {/each}
+  </table>
 </section>
 
 <style>
@@ -44,7 +47,6 @@
 
   table {
     border-collapse: collapse;
-    margin-bottom: 10px;
     width: 100%;
   }
 
@@ -55,24 +57,29 @@
 
   th {
     text-align: left;
+    text-transform: uppercase;
     font-weight: normal;
     color: rgba(255, 255, 255, .6);
   }
 
   .fixture__team {
-    width: 27.5%;
+    width: 25%;
   }
 
   .fixture__score {
-    width: 20%;
+    width: 15%;
     text-align: center;
   }
 
   .fixture__time {
-    width: 10%;
+    width: 17.5%;
   }
 
   .fixture__broadcaster {
-    width: 15%;
+    width: 17.5%;
+  }
+  
+  a {
+    color: inherit;
   }
 </style>
