@@ -27,10 +27,12 @@
 button {
   appearance: none;
   padding: 1px 2px;
+  margin: 0;
   border: 0;
   background: none;
   color: inherit;
   font-family: inherit;
+  font-size: inherit;
   cursor: pointer;
   font-weight: bold;
 }
