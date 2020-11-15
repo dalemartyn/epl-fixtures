@@ -1,13 +1,34 @@
 const fetch = require('node-fetch');
-const { keyBy } = require('lodash');
+const { keyBy, chain } = require('lodash');
 
 module.exports = async function getFixtures(gameweek = 1) {
-  const [fixtures, teams] = await Promise.all([getFixturesJson(gameweek), getTeams()]);
+  const [apiFixtures, teams] = await Promise.all([getFixturesJson(gameweek), getTeams()]);
+
+  const fixtures = apiFixtures.map((f) => createFixture(f, teams));
+  const matchdays = chain(fixtures)
+    .groupBy('date')
+    .toPairs()
+    .map(([date, fixtures]) => ({
+      date,
+      human_date: humanDate(date),
+      fixtures
+    }))
+    .sortBy('date')
+    .value();
 
   return {
     gameweek,
-    fixtures: fixtures.map((f) => createFixture(f, teams))
+    matchdays
   };
+}
+
+function humanDate(isoDateTime) {
+  return new Date(isoDateTime).toLocaleDateString('en-GB', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 }
 
 function getFixturesJson(gameweek = 1) {
@@ -56,6 +77,8 @@ function createFixture(fixture, teams) {
     started,
     finished,
     minutes,
-    code
+    code,
+    date: kickoff_time.split('T')[0],
+    time: new Date(fixture.kickoff_time).toLocaleTimeString('en-GB', { timeStyle: 'short' })
   };
 }

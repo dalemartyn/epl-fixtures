@@ -34,8 +34,8 @@
   </div>
   <div slot="main">
     {#if gameweeks.length}
-      {#each gameweeks as {gameweek, fixtures, current_gameweek}}
-        <Gameweek {gameweek} {fixtures} {current_gameweek} />
+      {#each gameweeks as {gameweek, matchdays, current_gameweek}}
+        <Gameweek {gameweek} {matchdays} {current_gameweek} />
       {/each}
     {/if}
   </div>
@@ -43,10 +43,10 @@
 
 <style>
 :global(body) {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: 'IA Writer Mono', monospace;
   background: #000;
   color: #fff;
-  font-size: 13.5px;
+  font-size: 14px;
   margin: 0;
 }
 </style>

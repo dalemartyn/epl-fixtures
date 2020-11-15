@@ -32,6 +32,7 @@ button {
   color: inherit;
   font-family: inherit;
   cursor: pointer;
+  font-weight: bold;
 }
 
 button:nth-child(odd) {

@@ -15,9 +15,9 @@
 
 <style>
 .layout {
-  --columns: 4;
-  --column-width: 120px;
-  --gap: 20px;
+  --columns: 6;
+  --column-width: 60px;
+  --gap: 60px;
   max-width: calc(var(--columns) * var(--column-width) + (var(--columns) - 1) * var(--gap));
   margin-left: auto;
   margin-right: auto;
@@ -29,16 +29,19 @@
 }
 
 .sidebar {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 60px;
+  padding-bottom: 60px;
   position: sticky;
   top: 0;
 }
 
 .layout__main {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 60px;
   grid-column: 2 / -1;
+}
+
+h1 {
+  margin: 0;
 }
 
 .trophy {

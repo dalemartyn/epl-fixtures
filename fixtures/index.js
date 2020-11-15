@@ -5,14 +5,17 @@ const getGameweek = require('./get-gameweek');
 function getFixturesWithBroadcastersByGameweek(gameweek) {
   return getFixtures(gameweek)
     .then((data) => {
-      const [startDate, endDate] = getStartAndEndDates(data.fixtures);
+      const startDate = data.matchdays[0].date;
+      const endDate = data.matchdays[data.matchdays.length - 1].date;
       return getBroadcastSchedule(startDate, endDate)
         .then((schedule) => {
-          data.fixtures = data.fixtures.map((fixture) => {
-            return {
-              ...fixture,
-              broadcaster: schedule[fixture.code]
-            }
+          data.matchdays.forEach((matchday) => {
+            matchday.fixtures = matchday.fixtures.map((fixture) => {
+              return {
+                ...fixture,
+                broadcaster: schedule[fixture.code]
+              }
+            });
           });
           return data;
         });
@@ -23,12 +26,6 @@ function getFixturesWithBroadcasters() {
   return getGameweek().then((gameweek) => {
     return getFixturesWithBroadcastersByGameweek(gameweek);
   });
-}
-
-function getStartAndEndDates(fixtures) {
-  const startDate = fixtures[0].kickoff_time.split('T')[0];
-  const endDate = fixtures[fixtures.length - 1].kickoff_time.split('T')[0];
-  return [startDate, endDate]
 }
 
 async function getAllFixtures() {

@@ -1,6 +1,6 @@
-const getFixtures = require('./fixtures/get-fixtures');
+const { getAllFixtures } = require('./fixtures');
 
-getFixtures(1)
+getAllFixtures()
   .then((data) => {
     console.log(JSON.stringify(data, null, 2));
   });
