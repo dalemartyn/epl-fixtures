@@ -1,11 +1,15 @@
 <script>
   export let gameweek;
+  export let date;
   export let current_gameweek;
   export let matchdays;
 </script>
 
 <section data-gameweek={gameweek} data-current-gameweek={current_gameweek || null}>
-  <h2>Gameweek {gameweek}</h2>
+  <h2>
+    Gameweek {gameweek}
+    <span class="date">{date}</span>
+  </h2>
   <table>
     {#each matchdays as {weekday, fixtures}}
       {#each fixtures as fixture}
@@ -81,5 +85,9 @@
   
   a {
     color: inherit;
+  }
+
+  .date {
+    font-weight: normal;
   }
 </style>

@@ -7,9 +7,7 @@ const teams = require('./teams');
 function getFixturesWithBroadcastersByGameweek(gameweek) {
   return getFixtures(gameweek)
     .then((data) => {
-      const startDate = data.matchdays[0].date;
-      const endDate = data.matchdays[data.matchdays.length - 1].date;
-      return getBroadcastSchedule(startDate, endDate)
+      return getBroadcastSchedule(data.start_date, data.end_date)
         .then((schedule) => {
           data.matchdays.forEach((matchday) => {
             matchday.fixtures = matchday.fixtures.map((fixture) => {

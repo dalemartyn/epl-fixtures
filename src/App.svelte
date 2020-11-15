@@ -34,8 +34,8 @@
     <Navigation {gameweeks} {showGameweek} />
   </div><div slot="main">
     {#if gameweeks.length}
-      {#each gameweeks as {gameweek, matchdays, current_gameweek}}
-        <Gameweek {gameweek} {matchdays} {current_gameweek} />
+      {#each gameweeks as gameweek}
+        <Gameweek {...gameweek} />
       {/each}
     {/if}
   </div></Layout>

@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const { chain } = require('lodash');
 const teams = require('./teams');
+const getGameweek = require('./get-gameweek');
 
 module.exports = async function getFixtures(gameweek = 1) {
   const apiFixtures = await getFixturesJson(gameweek);
@@ -18,9 +19,17 @@ module.exports = async function getFixtures(gameweek = 1) {
     .sortBy('date')
     .value();
 
+  const start_date = matchdays[0].date;
+  const end_date = matchdays[matchdays.length - 1].date;
+
+  const date = getGameweekDates(start_date, end_date);
+
   return {
     gameweek,
-    matchdays
+    matchdays,
+    start_date,
+    end_date,
+    date
   };
 }
 
@@ -37,6 +46,30 @@ function weekday(isoDateTime) {
   return new Date(isoDateTime).toLocaleDateString('en-GB', {
     weekday: 'short',
   });
+}
+
+function getDayMonthAndYear(isoDateTime) {
+  const date = new Date(isoDateTime);
+  const day = date.toLocaleDateString('en-GB', { day: 'numeric' });
+  const month = date.toLocaleDateString('en-GB', { month: 'long' });
+  const year = date.toLocaleDateString('en-GB', { year: 'numeric' });
+
+  return { day, month, year };
+}
+
+function getGameweekDates(startDate, endDate) { 
+  const start = getDayMonthAndYear(startDate);
+  const end = getDayMonthAndYear(endDate);
+
+  if (start.month === end.month && start.day === end.day) {
+    return `${end.day} ${end.month} ${end.year}`;
+  } else if (start.month === end.month) {
+    return `${start.day}-${end.day} ${end.month} ${end.year}`;
+  } else if (start.year === end.year) {
+    return `${start.day} ${start.month}-${end.day} ${end.month} ${end.year}`;
+  } else {
+    return `${start.day} ${start.month} ${start.year}-${end.day} ${end.month} ${end.year}`;
+  }
 }
 
 function getFixturesJson(gameweek = 1) {
