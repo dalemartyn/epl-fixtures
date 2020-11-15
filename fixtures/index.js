@@ -86,6 +86,8 @@ function getYoutubeId(fixture, youtubePlaylist) {
     }
   }
 
+  console.log(item.game, team_h.regex, team_a.regex);
+
   return null;
 }
 

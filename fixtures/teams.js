@@ -64,7 +64,7 @@ module.exports = {
     short_name: 'FUL'
   },
   '9': {
-    regex: 'Leeds|Leeds United|Leeds Utd',
+    regex: 'Leicester|Leicester City',
     code: 13,
     id: 9,
     name: 'Leicester',
@@ -72,7 +72,7 @@ module.exports = {
     short_name: 'LEI'
   },
   '10': {
-    regex: 'Leicester|Leicester City',
+    regex: 'Leeds|Leeds United|Leeds Utd',
     code: 2,
     id: 10,
     name: 'Leeds',
