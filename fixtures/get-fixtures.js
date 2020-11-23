@@ -99,7 +99,7 @@ function createFixture(fixture, teams) {
     team_a_score,
     kickoff_time,
     started,
-    finished,
+    finished_provisional: finished,
     minutes,
     code
   } = fixture;

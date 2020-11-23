@@ -54,16 +54,8 @@
     width: 100%;
   }
 
-  td,
-  th {
+  td {
     padding: 1px 0 0;
-  }
-
-  th {
-    text-align: left;
-    text-transform: uppercase;
-    font-weight: normal;
-    color: rgba(255, 255, 255, .6);
   }
 
   .fixture__team {
