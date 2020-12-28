@@ -25,7 +25,7 @@
           <td class="fixture__team">{fixture.team_a.name}</td>
           <td class="fixture__time">{weekday} {fixture.time}</td>
           <td class="fixture__broadcaster">
-            {#if fixture.finished}
+            {#if fixture.finished && fixture.youtube}
               <a href="https://www.youtube.com/watch?v={fixture.youtube}" target="_blank">Highlights</a>
             {:else}
               {fixture.broadcaster||''}

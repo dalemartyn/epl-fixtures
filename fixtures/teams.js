@@ -96,7 +96,7 @@ module.exports = {
     short_name: 'MCI'
   },
   '13': {
-    regex: 'Man Utd|Manchester United',
+    regex: 'Man Utd|Manchester United|Man United',
     code: 1,
     id: 13,
     name: 'Man Utd',
