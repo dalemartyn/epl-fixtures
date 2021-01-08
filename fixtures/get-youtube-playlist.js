@@ -29,10 +29,14 @@ module.exports = async function getYoutubePlaylist() {
     items = items.concat(page.items);
   }
 
-  return items.map((item) => ({
-    game: item.snippet.title.split('|')[1].trim(),
-    id: item.snippet.resourceId.videoId
-  })).concat(MISSING_FIXTURES);
+  return items.map((item) => {
+    const game = item.snippet.title.split('|')[1] ?? '';
+
+    return {
+      game: game.trim(),
+      id: item.snippet.resourceId.videoId
+    };
+  }).concat(MISSING_FIXTURES);
 };
 
 function getYoutubePlaylistPageJson(pageToken) {
