@@ -4,20 +4,7 @@ const fetch = require('node-fetch');
 
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 const YOUTUBE_PLAYLIST_ID = 'PLISuFiQTdKDWaRI8fQH2XBCHdM__dATrO';
-const MISSING_FIXTURES = [
-  {
-    game: 'Man City 2-0 Newcastle',
-    id: 'cH-IXgOZFSc'
-  },
-  {
-    game: 'Sheffield Utd 0-1 Everton',
-    id: 'LYb3lpyzuMI'
-  },
-  {
-    game: 'Brighton 1-2 Southampton',
-    id: '_WI9lJchSp4'
-  }
-];
+const MISSING_FIXTURES = [];
 
 module.exports = async function getYoutubePlaylist() {
 

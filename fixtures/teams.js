@@ -16,52 +16,52 @@ module.exports = {
     short_name: 'AVL'
   },
   '3': {
+    regex: 'Brentford',
+    code: 94,
+    id: 3,
+    name: 'Brentford',
+    pulse_id: 130,
+    short_name: 'BRE'
+  },
+  '4': {
     regex: 'Brighton',
     code: 36,
-    id: 3,
+    id: 4,
     name: 'Brighton',
     pulse_id: 131,
     short_name: 'BHA'
   },
-  '4': {
+  '5': {
     regex: 'Burnley',
     code: 90,
-    id: 4,
+    id: 5,
     name: 'Burnley',
     pulse_id: 43,
     short_name: 'BUR'
   },
-  '5': {
+  '6': {
     regex: 'Chelsea',
     code: 8,
-    id: 5,
+    id: 6,
     name: 'Chelsea',
     pulse_id: 4,
     short_name: 'CHE'
   },
-  '6': {
+  '7': {
     regex: 'Crystal Palace',
     code: 31,
-    id: 6,
+    id: 7,
     name: 'Crystal Palace',
     pulse_id: 6,
     short_name: 'CRY'
   },
-  '7': {
+  '8': {
     regex: 'Everton',
     code: 11,
-    id: 7,
+    id: 8,
     name: 'Everton',
     pulse_id: 7,
     short_name: 'EVE'
-  },
-  '8': {
-    regex: 'Fulham',
-    code: 54,
-    id: 8,
-    name: 'Fulham',
-    pulse_id: 34,
-    short_name: 'FUL'
   },
   '9': {
     regex: 'Leicester|Leicester City',
@@ -112,12 +112,12 @@ module.exports = {
     short_name: 'NEW'
   },
   '15': {
-    regex: 'Sheff Utd|Sheffield Utd|Sheffield United',
-    code: 49,
+    regex: 'Norwich|Norwich City',
+    code: 45,
     id: 15,
-    name: 'Sheffield Utd',
-    pulse_id: 18,
-    short_name: 'SHU'
+    name: 'Norwich',
+    pulse_id: 14,
+    short_name: 'NOR'
   },
   '16': {
     regex: 'Southampton',
@@ -136,12 +136,12 @@ module.exports = {
     short_name: 'TOT'
   },
   '18': {
-    regex: 'West Brom',
-    code: 35,
+    regex: 'Watford',
+    code: 57,
     id: 18,
-    name: 'West Brom',
-    pulse_id: 36,
-    short_name: 'WBA'
+    name: 'Watford',
+    pulse_id: 33,
+    short_name: 'WAT'
   },
   '19': {
     regex: 'West Ham|West Ham Utd|West Ham United',
