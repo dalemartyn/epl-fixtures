@@ -3,6 +3,11 @@
   export let date;
   export let current_gameweek;
   export let matchdays;
+
+  function localTime(time) {
+    return new Date(time)
+      .toLocaleTimeString('en-GB', { timeStyle: 'short' });
+  }
 </script>
 
 <section data-gameweek={gameweek} data-current-gameweek={current_gameweek || null}>
@@ -23,7 +28,7 @@
             {/if}
           </td>
           <td class="fixture__team">{fixture.team_a.name}</td>
-          <td class="fixture__time">{weekday} {fixture.time}</td>
+          <td class="fixture__time">{weekday} {localTime(fixture.kickoff_time)}</td>
           <td class="fixture__broadcaster">
             {#if fixture.finished && fixture.youtube}
               <a href="https://www.youtube.com/watch?v={fixture.youtube}" target="_blank">Highlights</a>

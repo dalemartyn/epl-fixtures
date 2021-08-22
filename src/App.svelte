@@ -9,6 +9,7 @@
 
   onMount(async () => {
     const res = await fetch(`https://bqeptisrxl.execute-api.eu-west-2.amazonaws.com/default/get-all-fixtures`);
+    // const res = await fetch(`/.netlify/functions/get-all-fixtures`);
     gameweeks = await res.json();
     await tick();
     showCurrentGameweek('auto');

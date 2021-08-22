@@ -3,7 +3,7 @@ require('dotenv').config();
 const fetch = require('node-fetch');
 
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
-const YOUTUBE_PLAYLIST_ID = 'PLISuFiQTdKDWaRI8fQH2XBCHdM__dATrO';
+const YOUTUBE_PLAYLIST_ID = 'PLISuFiQTdKDV3SEkiwMuV62RGAWPWFjmk';
 const MISSING_FIXTURES = [];
 
 module.exports = async function getYoutubePlaylist() {
