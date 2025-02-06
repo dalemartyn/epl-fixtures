@@ -1,13 +1,46 @@
-const fetch = require('node-fetch');
-const { chain } = require('lodash');
-const teams = require('./teams');
-const getGameweek = require('./get-gameweek');
+import { chain } from 'lodash';
+import teams from './teams';
 
-module.exports = async function getFixtures(gameweek = 1) {
+interface Team {
+  name: string;
+  short_name: string;
+  id: number;
+}
+
+interface Fixture {
+  team_h: Team;
+  team_a: Team;
+  team_h_score: number;
+  team_a_score: number;
+  kickoff_time: string;
+  started: boolean;
+  finished: boolean;
+  minutes: number;
+  code: string;
+  date: string;
+  time: string;
+}
+
+interface Matchday {
+  date: string;
+  human_date: string;
+  weekday: string;
+  fixtures: Fixture[];
+}
+
+interface FixturesResponse {
+  gameweek: number;
+  matchdays: Matchday[];
+  start_date: string;
+  end_date: string;
+  date: string;
+}
+
+export default async function getFixtures(gameweek: number = 1): Promise<FixturesResponse> {
   const apiFixtures = await getFixturesJson(gameweek);
 
-  const fixtures = apiFixtures.map((f) => createFixture(f, teams));
-  const matchdays = chain(fixtures)
+  const fixtures: Fixture[] = apiFixtures.map((f: any) => createFixture(f, teams));
+  const matchdays: Matchday[] = chain(fixtures)
     .groupBy('date')
     .toPairs()
     .map(([date, fixtures]) => ({
@@ -33,7 +66,7 @@ module.exports = async function getFixtures(gameweek = 1) {
   };
 }
 
-function humanDate(isoDateTime) {
+function humanDate(isoDateTime: string): string {
   return new Date(isoDateTime).toLocaleDateString('en-GB', {
     weekday: 'long',
     year: 'numeric',
@@ -42,13 +75,13 @@ function humanDate(isoDateTime) {
   });
 }
 
-function weekday(isoDateTime) {
+function weekday(isoDateTime: string): string {
   return new Date(isoDateTime).toLocaleDateString('en-GB', {
     weekday: 'short',
   });
 }
 
-function getDayMonthAndYear(isoDateTime) {
+function getDayMonthAndYear(isoDateTime: string): { day: string; month: string; year: string } {
   const date = new Date(isoDateTime);
   const day = date.toLocaleDateString('en-GB', { day: 'numeric' });
   const month = date.toLocaleDateString('en-GB', { month: 'long' });
@@ -57,7 +90,7 @@ function getDayMonthAndYear(isoDateTime) {
   return { day, month, year };
 }
 
-function getGameweekDates(startDate, endDate) { 
+function getGameweekDates(startDate: string, endDate: string): string {
   const start = getDayMonthAndYear(startDate);
   const end = getDayMonthAndYear(endDate);
 
@@ -72,12 +105,12 @@ function getGameweekDates(startDate, endDate) {
   }
 }
 
-function getFixturesJson(gameweek = 1) {
-  return fetch(`https://draft.premierleague.com/api/event/${gameweek}/fixtures`)
-    .then((res) => res.json())
+async function getFixturesJson(gameweek: number = 1): Promise<any[]> {
+  const res = await fetch(`https://draft.premierleague.com/api/event/${gameweek}/fixtures`);
+  return res.json();
 }
 
-function getTeam(i, teams) {
+function getTeam(i: number, teams: any[]): Team {
   const {
     name,
     short_name,
@@ -91,7 +124,7 @@ function getTeam(i, teams) {
   };
 }
 
-function createFixture(fixture, teams) {
+function createFixture(fixture: any, teams: any[]): Fixture {
   const {
     team_h,
     team_a,
@@ -103,6 +136,7 @@ function createFixture(fixture, teams) {
     minutes,
     code
   } = fixture;
+  
   return {
     team_h: {
       ...getTeam(team_h, teams),
@@ -118,6 +152,6 @@ function createFixture(fixture, teams) {
     minutes,
     code,
     date: kickoff_time.split('T')[0],
-    time: new Date(fixture.kickoff_time).toLocaleTimeString('en-GB', { timeStyle: 'short' })
+    time: new Date(kickoff_time).toLocaleTimeString('en-GB', { timeStyle: 'short' })
   };
 }

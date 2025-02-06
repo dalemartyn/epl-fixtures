@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Netlify Function",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/node_modules/.bin/netlify",
+            "args": ["dev"],
+            "env": {
+                "NETLIFY_DEV": "true"
+            },
+            "restart": true
+        }
+    ]
+}
+  
