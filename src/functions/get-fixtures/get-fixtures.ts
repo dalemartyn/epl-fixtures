@@ -1,5 +1,5 @@
-import { Handler } from '@netlify/functions';
 import { getFixturesWithBroadcasters, getFixturesWithBroadcastersByGameweek } from '../../../fixtures/index';
+import type { Handler } from '@netlify/functions';
 
 interface EventBody {
   gameweek: number;
@@ -24,6 +24,7 @@ const handler: Handler = async (event) => {
     };
   } catch (err: any) {
     console.log(err);
+
     return {
       statusCode: 500,
       headers: {

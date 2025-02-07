@@ -2,6 +2,11 @@ interface BroadcastSchedule {
   [fixtureCode: string]: string;
 }
 
+interface BroadcastApiData {
+	content: Array<{ fixture: { altIds: { opta: string } };
+	broadcasters: Array<{ abbreviation: string }> }>
+}
+
 export default function getBroadcastSchedule(startDate: string, endDate: string): Promise<BroadcastSchedule> {
   return fetch(getFixturesUrl(startDate, endDate), {
     headers: {
@@ -9,13 +14,15 @@ export default function getBroadcastSchedule(startDate: string, endDate: string)
     },
   })
     .then((res) => res.json())
-    .then(({ content: items }: { content: Array<{ fixture: { altIds: { opta: string } }; broadcasters: Array<{ abbreviation: string }> }> }) => {
+    .then(({ content: items }: BroadcastApiData) => {
       const schedule: BroadcastSchedule = {};
-      items.forEach((item) => {
+
+			items.forEach((item) => {
         const fixtureCode = item.fixture.altIds.opta.replace('g', '');
         const broadcaster = item.broadcasters[0].abbreviation;
         schedule[fixtureCode] = broadcaster;
       });
+
       return schedule;
     });
 }

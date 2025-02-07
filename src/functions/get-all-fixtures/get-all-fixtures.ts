@@ -1,5 +1,5 @@
-import { Handler } from '@netlify/functions';
 import { getAllFixtures } from '../../../fixtures';
+import type { Handler } from '@netlify/functions';
 
 const headers = {
   'content-type': 'application/json',
@@ -16,8 +16,8 @@ export const handler: Handler = async () => {
       body: JSON.stringify(data, null, 2),
     };
   } catch (err) {
-    throw err;
-    console.error(err);
+    console.log(err);
+
     return {
       statusCode: 500,
       headers,

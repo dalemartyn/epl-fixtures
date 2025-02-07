@@ -1,39 +1,15 @@
 import getBroadcastSchedule from './get-broadcast-schedule';
-import getFixtures from './get-fixtures';
 import getGameweek from './get-gameweek';
+import getCurrentGameweekNumber from './get-current-gameweek-number';
 import getYoutubePlaylist from './get-youtube-playlist';
 import teams from './teams';
+import type { Gameweek, Fixture, GameHighlights } from './types';
 
-interface Fixture {
-  code: string;
-  team_h: { id: number };
-  team_a: { id: number };
-  finished: boolean;
-  [key: string]: any; // For other dynamic properties
-}
-
-interface Matchday {
-  fixtures: Fixture[];
-}
-
-interface GameweekData {
-  gameweek: number;
-  matchdays: Matchday[];
-  start_date: string;
-  end_date: string;
-  current_gameweek: boolean
-}
-
-interface YoutubeItem {
-  game: string;
-  id: string;
-}
-
-async function getFixturesWithBroadcastersByGameweek(gameweek: number): Promise<GameweekData> {
-  const data = await getFixtures(gameweek);
+async function getFixturesWithBroadcastersByGameweek(gameweek: number): Promise<Gameweek> {
+  const data = await getGameweek(gameweek);
   const schedule = await getBroadcastSchedule(data.start_date, data.end_date);
 
-  data.matchdays.forEach((matchday: Matchday) => {
+  data.matchdays.forEach((matchday) => {
     matchday.fixtures = matchday.fixtures.map((fixture) => {
       return {
         ...fixture,
@@ -45,19 +21,20 @@ async function getFixturesWithBroadcastersByGameweek(gameweek: number): Promise<
   return data;
 }
 
-async function getFixturesWithBroadcasters(): Promise<GameweekData> {
-  const gameweek = await getGameweek();
-  return getFixturesWithBroadcastersByGameweek(gameweek);
+async function getFixturesWithBroadcasters(): Promise<Gameweek> {
+  const gameweekNumber = await getCurrentGameweekNumber();
+
+  return getFixturesWithBroadcastersByGameweek(gameweekNumber);
 }
 
 async function getAllFixtures() {
-  const weeks = Array(38).fill(null).map((_, i) => 38 - i);
+  const weeks = Array.from({ length: 38 }, (_, i) => 38 - i);
   const [
     gameweek,
     youtubePlaylist,
     ...gameweeks
   ] = await Promise.all([
-    getGameweek(),
+    getCurrentGameweekNumber(),
     getYoutubePlaylist(),
     ...weeks.map((gameweek) => getFixturesWithBroadcastersByGameweek(gameweek))
   ]);
@@ -69,16 +46,16 @@ async function getAllFixtures() {
   return gameweeksWithYoutube;
 }
 
-function addCurrentGameweek(gameweek: string, gameweeks: GameweekData[]): GameweekData[] {
+function addCurrentGameweek(gameweek: number, gameweeks: Gameweek[]): Gameweek[] {
   return gameweeks.map((g) => {
-    if (g.gameweek === +gameweek) {
+    if (g.gameweek === gameweek) {
       g.current_gameweek = true;
     }
     return g;
   });
 }
 
-function addYoutubeIds(youtubePlaylist: YoutubeItem[], gameweeks: GameweekData[]): GameweekData[] {
+function addYoutubeIds(youtubePlaylist: GameHighlights[], gameweeks: Gameweek[]): Gameweek[] {
   return gameweeks.map((gameweek) => {
     gameweek.matchdays.forEach((matchday) => {
       matchday.fixtures = matchday.fixtures.map((fixture) => {
@@ -95,13 +72,13 @@ function addYoutubeIds(youtubePlaylist: YoutubeItem[], gameweeks: GameweekData[]
   });
 }
 
-function getYoutubeId(fixture: Fixture, youtubePlaylist: YoutubeItem[]): string | null {
+function getYoutubeId(fixture: Fixture, youtubePlaylist: GameHighlights[]): string | null {
   const team_h = teams[fixture.team_h.id];
   const team_a = teams[fixture.team_a.id];
   const regex = new RegExp(`(${team_h.regex})\\s\\d+-\\d+\\s(${team_a.regex})`);
 
   for (const item of youtubePlaylist) {
-    if (item.game.match(regex)) {
+    if (item.title.match(regex)) {
       return item.id;
     }
   }

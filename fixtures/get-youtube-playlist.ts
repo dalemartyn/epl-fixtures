@@ -1,12 +1,13 @@
 import dotenv from 'dotenv';
 
+import type { GameHighlights } from './types';
+
 dotenv.config();
 
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY as string;
-const YOUTUBE_PLAYLIST_ID = 'PLISuFiQTdKDWttg3bD_4o2E-T5ud5vawr';
-const MISSING_FIXTURES: Array<{ game: string; id: string }> = [];
+const YOUTUBE_PLAYLIST_ID = 'PLISuFiQTdKDWc1PjlgqIAm1Bzc38MoLa6';
 
-interface YoutubeItem {
+interface PlaylistItem {
   snippet: {
     title: string;
     resourceId: {
@@ -15,14 +16,9 @@ interface YoutubeItem {
   };
 }
 
-interface PlaylistItem {
-  game: string;
-  id: string;
-}
-
-export default async function getYoutubePlaylist(): Promise<PlaylistItem[]> {
+export default async function getYoutubePlaylist(): Promise<GameHighlights[]> {
   let page = await getYoutubePlaylistPageJson();
-  let items: YoutubeItem[] = page.items;
+  let items: PlaylistItem[] = page.items;
 
   while (page.nextPageToken) {
     page = await getYoutubePlaylistPageJson(page.nextPageToken);
@@ -31,13 +27,12 @@ export default async function getYoutubePlaylist(): Promise<PlaylistItem[]> {
 
   return items
     .map((item) => {
-      const game = item.snippet.title.split('|')[1]?.trim() ?? '';
+      const title = item.snippet.title.split('|')[1]?.trim() ?? '';
       return {
-        game,
+        title,
         id: item.snippet.resourceId.videoId,
       };
     })
-    .concat(MISSING_FIXTURES);
 }
 
 async function getYoutubePlaylistPageJson(pageToken?: string) {
@@ -57,5 +52,6 @@ async function getYoutubePlaylistPageJson(pageToken?: string) {
   const res = await fetch(url.toString(), {
     method: 'GET',
   });
+
   return res.json();
 }

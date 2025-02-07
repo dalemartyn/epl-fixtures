@@ -1,4 +1,15 @@
-export default {
+import type { Team, TeamId } from './types';
+
+interface TeamData {
+  code: number;
+  id: TeamId;
+  name: string;
+  pulse_id: number;
+  short_name: string;
+  regex: string;
+}
+
+const teams: Record<TeamId, TeamData> = {
   1: {
     "code": 3,
     "id": 1,
@@ -21,7 +32,7 @@ export default {
     "name": "Bournemouth",
     "pulse_id": 127,
     "short_name": "BOU",
-    "regex": "Bournemouth"
+    "regex": "Bournemouth|AFC Bournemouth"
   },
   4: {
     "code": 94,
@@ -125,7 +136,7 @@ export default {
     "name": "Nott'm Forest",
     "pulse_id": 15,
     "short_name": "NFO",
-    "regex": "Forest"
+    "regex": "Forest|Nottingham Forest|N.Forest"
   },
   17: {
     "code": 20,
@@ -159,4 +170,23 @@ export default {
     "short_name": "WOL",
     "regex": "Wolves|Wolverhampton Wanderers"
   }
+};
+
+function getTeamById(teamId: TeamId): Team {
+	const {
+		name,
+		short_name,
+		id
+	} = teams[teamId];
+
+	return {
+		name,
+		short_name,
+		id
+	};
+}
+
+export default teams;
+export {
+	getTeamById
 };
